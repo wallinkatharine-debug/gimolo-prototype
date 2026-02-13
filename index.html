@@ -1,57 +1,165 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Gimolo (Static Prototype)</title>
-    <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body>
-    <div class="shell">
-      <header class="topbar">
-        <div class="brand">Gimolo</div>
-        <div class="sub">Spin → Act → Dot</div>
-        <label class="toggle">
-          <input id="communityOnly" type="checkbox" />
-          <span>Community only</span>
-        </label>
-      </header>
-
-      <section class="card">
-        <div class="cardTitle">Dot World</div>
-        <div id="counts" class="counts">Loading…</div>
-        <div class="dotWorldPlaceholder"></div>
-      </section>
-
-      <section class="card activityCard">
-        <div id="promptLine" class="promptLine">Press Spin.</div>
-
-        <div id="vibeHeader" class="vibeHeader"></div>
-        <h2 id="activityTitle" class="activityTitle"></h2>
-
-        <div class="vibeRow">
-          <span id="vibeChip" class="vibeChip"></span>
-          <span id="vibeEnergy" class="vibeEnergy"></span>
-        </div>
-
-        <ol id="activityList" class="activityList"></ol>
-
-        <div id="vibePraise" class="vibePraise"></div>
-        <div id="vibeMirror" class="vibeMirror"></div>
-
-        <div class="btnRow">
-          <button id="btnSpin" class="btn primary">Spin</button>
-          <button id="btnReroll" class="btn">Re-roll</button>
-          <button id="btnComplete" class="btn">Complete</button>
-        </div>
-      </section>
-
-      <div class="footerRow">
-        <button id="btnReset" class="btn danger">Reset local data</button>
-        <div class="footnote">Prototype: static files + JSON library (no backend)</div>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Gimolo Prototype</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#FDE68A" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app" class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true"></div>
+        <div class="word">Gimolo</div>
       </div>
-    </div>
+      <button id="btnProfile" class="iconbtn" aria-label="Open profile">👤</button>
+    </header>
 
-    <script src="./app.js"></script>
-  </body>
+    <main class="main">
+      <section id="screenHome" class="screen active">
+        <div class="spinWrap">
+          <button id="btnSpin" class="spinBtn">
+            <div class="spinGlow" aria-hidden="true"></div>
+            <div class="spinText">SPIN</div>
+            <div class="spinSub">Start something</div>
+          </button>
+        </div>
+
+        <div class="filters">
+          <div class="filterRow">
+            <label>Energy</label>
+            <select id="fEnergy">
+              <option value="All">All</option>
+              <option value="Chill">Chill</option>
+              <option value="Active">Active</option>
+            </select>
+          </div>
+          <div class="filterRow">
+            <label>Flavor</label>
+            <select id="fFlavor">
+              <option value="All">All</option>
+              <option value="Play">Play</option>
+              <option value="Build">Build</option>
+              <option value="Help">Help</option>
+              <option value="Explore">Explore</option>
+              <option value="Connect">Connect</option>
+              <option value="Create">Create</option>
+              <option value="Health">Health</option>
+            </select>
+          </div>
+          <div class="filterRow">
+            <label>Time</label>
+            <select id="fTime">
+              <option value="All">All</option>
+              <option value="5">≤ 5 min</option>
+              <option value="10">≤ 10 min</option>
+              <option value="15">≤ 15 min</option>
+            </select>
+          </div>
+          <div class="filterRow">
+            <label>Location</label>
+            <select id="fLocation">
+              <option value="All">All</option>
+              <option value="Indoor">Indoor</option>
+              <option value="Outdoor">Outdoor</option>
+              <option value="Anywhere">Anywhere</option>
+            </select>
+          </div>
+        </div>
+
+        <section class="momentum">
+          <div class="bannerCard">
+            <div class="bannerTitle">Your Momentum</div>
+            <div id="banner" class="banner" aria-label="Momentum banner"></div>
+          </div>
+          <div id="momentumText" class="momentumText">You’ve started 0 things this month.</div>
+        </section>
+      </section>
+
+      <section id="screenAction" class="screen">
+        <div class="card">
+          <div class="pillRow">
+            <span id="aTime" class="pill">10 min</span>
+            <span id="aFlavor" class="pill">Play</span>
+            <span id="aEnergy" class="pill">Chill</span>
+            <span id="aLocation" class="pill">Anywhere</span>
+          </div>
+          <h2 id="aTitle" class="title">Action Title</h2>
+          <p id="aDesc" class="desc">Action description goes here.</p>
+          <div class="meta">
+            <div><span class="metaLabel">Supplies:</span> <span id="aSupplies">None</span></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="btnStart" class="primary">START NOW</button>
+          <button id="btnSpinAgain" class="ghost">Spin again</button>
+        </div>
+      </section>
+
+      <section id="screenInProgress" class="screen">
+        <div class="card">
+          <h2 class="title">In progress…</h2>
+          <p class="desc">Do the action in the real world. When you're done, tap complete.</p>
+        </div>
+        <div class="actions">
+          <button id="btnComplete" class="primary">COMPLETE</button>
+          <button id="btnCancel" class="ghost">Cancel</button>
+        </div>
+      </section>
+
+      <section id="screenCelebrate" class="screen">
+        <div class="celebrate">
+          <div class="burst">🎉</div>
+          <h2 class="title">You started something.</h2>
+          <p id="celebrateText" class="desc">Momentum builds.</p>
+        </div>
+        <div class="nextWrap" aria-label="What next control">
+          <div class="nextTitle">What next?</div>
+          <div class="nextPills">
+            <button id="btnKeep" class="pillBtn" type="button">Keep this energy</button>
+            <button id="btnSwitch" class="pillBtn" type="button">Switch the vibe</button>
+            <button id="btnSurprise" class="pillBtn" type="button">Surprise me</button>
+          </div>
+          <div class="nextHint">Optional. Applies to the next spin only.</div>
+        </div>
+        <div class="actions">
+          <button id="btnDone" class="primary">Spin again</button>
+          <button id="btnInvite" class="ghost">Invite someone (placeholder)</button>
+        </div>
+      </section>
+
+      <section id="screenProfile" class="screen">
+        <div class="card">
+          <h2 class="title">Profile</h2>
+          <div class="profileRow">
+            <div class="stat">
+              <div class="statNum" id="pTotal">0</div>
+              <div class="statLabel">Total starts</div>
+            </div>
+            <div class="stat">
+              <div class="statNum" id="pMonth">0</div>
+              <div class="statLabel">This month</div>
+            </div>
+          </div>
+          <div class="bannerTitle" style="margin-top:14px;">Banner</div>
+          <div id="bannerProfile" class="banner"></div>
+          <div class="bannerTitle" style="margin-top:14px;">Recent</div>
+          <div id="recent" class="recent"></div>
+
+          <div class="bannerTitle" style="margin-top:14px;">History</div>
+          <div id="history" class="history"></div>
+        </div>
+        <div class="actions">
+          <button id="btnBack" class="primary">Back</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
 </html>
