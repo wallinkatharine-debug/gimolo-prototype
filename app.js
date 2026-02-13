@@ -104,11 +104,48 @@ function refreshProfile(){
   });
 }
 
+
+function uniqueSorted(arr){
+  return Array.from(new Set(arr.filter(v => v != null && v !== ''))).sort((a,b)=>String(a).localeCompare(String(b)));
+}
+function populateSelect(id, values, keepValue=true){
+  const sel = $(id);
+  if (!sel) return;
+  const prev = sel.value;
+  // Clear existing options
+  sel.innerHTML = '';
+  const optAll = document.createElement('option');
+  optAll.value = 'All';
+  optAll.textContent = 'All';
+  sel.appendChild(optAll);
+  values.forEach(v => {
+    const o = document.createElement('option');
+    o.value = v;
+    o.textContent = v;
+    sel.appendChild(o);
+  });
+  if (keepValue && prev && Array.from(sel.options).some(o=>o.value===prev)){
+    sel.value = prev;
+  } else {
+    sel.value = 'All';
+  }
+}
+function initFiltersFromData(){
+  // Build filter value sets from the current dataset so UI and logic cannot drift.
+  const energies = uniqueSorted(state.actions.map(a=>a.energy));
+  const flavors = uniqueSorted(state.actions.map(a=>a.flavor));
+  const locations = uniqueSorted(state.actions.map(a=>a.location));
+  populateSelect('fEnergy', energies);
+  populateSelect('fFlavor', flavors);
+  populateSelect('fLocation', locations);
+  // Time filter stays as fixed buckets in HTML; keep as-is.
+}
+
 function matchesFilters(a){
-  const energy = $('fEnergy').value;
-  const flavor = $('fFlavor').value;
-  const time = $('fTime').value;
-  const location = $('fLocation').value;
+  const energy = $('fEnergy')?.value ?? 'All';
+  const flavor = $('fFlavor')?.value ?? 'All';
+  const time = $('fTime')?.value ?? 'All';
+  const location = $('fLocation')?.value ?? 'All';
   if (energy !== 'All' && a.energy !== energy) return false;
   if (flavor !== 'All' && a.flavor !== flavor) return false;
   if (location !== 'All' && a.location !== location) return false;
@@ -185,6 +222,7 @@ async function init(){
 
   const res = await fetch('actions.json');
   state.actions = await res.json();
+  initFiltersFromData();
 
   $('btnSpin').addEventListener('click', () => showAction(pickRandom()));
   $('btnSpinAgain').addEventListener('click', () => showAction(pickRandom()));
