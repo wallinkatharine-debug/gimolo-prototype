@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Gimolo (Static Prototype)</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <div class="brand">Gimolo</div>
+        <div class="sub">Spin → Act → Dot</div>
+        <label class="toggle">
+          <input id="communityOnly" type="checkbox" />
+          <span>Community only</span>
+        </label>
+      </header>
+
+      <section class="card">
+        <div class="cardTitle">Dot World</div>
+        <div id="counts" class="counts">Loading…</div>
+        <div class="dotWorldPlaceholder"></div>
+      </section>
+
+      <section class="card activityCard">
+        <div id="promptLine" class="promptLine">Press Spin.</div>
+
+        <div id="vibeHeader" class="vibeHeader"></div>
+        <h2 id="activityTitle" class="activityTitle"></h2>
+
+        <div class="vibeRow">
+          <span id="vibeChip" class="vibeChip"></span>
+          <span id="vibeEnergy" class="vibeEnergy"></span>
+        </div>
+
+        <ol id="activityList" class="activityList"></ol>
+
+        <div id="vibePraise" class="vibePraise"></div>
+        <div id="vibeMirror" class="vibeMirror"></div>
+
+        <div class="btnRow">
+          <button id="btnSpin" class="btn primary">Spin</button>
+          <button id="btnReroll" class="btn">Re-roll</button>
+          <button id="btnComplete" class="btn">Complete</button>
+        </div>
+      </section>
+
+      <div class="footerRow">
+        <button id="btnReset" class="btn danger">Reset local data</button>
+        <div class="footnote">Prototype: static files + JSON library (no backend)</div>
+      </div>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
